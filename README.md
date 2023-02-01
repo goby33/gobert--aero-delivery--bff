@@ -1,3 +1,7 @@
+<p>
+<img src="./docs/images/logo.png" height="100" />
+</p>
+
 # B.F.F. (Back for front)
 
 GitBook documentation :  [https://app.gitbook.com/o/pnEhpI29S43xX2hCVVtE/s/dAPGj3iELFyzrjbs0zuI/](https://app.gitbook.com/o/pnEhpI29S43xX2hCVVtE/s/dAPGj3iELFyzrjbs0zuI/)
