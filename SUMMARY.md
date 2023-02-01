@@ -1,4 +1,7 @@
 # Table of contents
 
 * [mvnw](README.md)
-* [Page 1](page-1.md)
+
+## 📖 Docs
+
+* [Page 1](docs/page-1.md)
