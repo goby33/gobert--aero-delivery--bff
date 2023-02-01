@@ -1,5 +1,5 @@
 <p>
-<img src="./docs/images/logo.png" height="100" />
+<img src="./docs/images/logo.png" height="300" />
 </p>
 
 # B.F.F. (Back for front)
