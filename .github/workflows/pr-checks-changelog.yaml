@@ -1,0 +1,27 @@
+name: Changelog
+
+on: workflow_call
+
+jobs:
+  changelog-check:
+    runs-on: [self-hosted, Linux, standard]
+    if: ${{ !contains('dependabot', github.head_ref) }}
+    name: 🩺 Check Changelog
+    steps:
+      - uses: actions/checkout@v3.2.0
+        with:
+          token: ${{ secrets.SVC_GITHUB_TOKEN }}
+
+      - name: ✅ Check changelog has been updated
+        id: changelogcheck
+        run: |
+          git fetch
+          echo "base ref is main checking changelog..."
+          if [ -z "$(git diff --name-only origin/${{ github.base_ref }} | grep CHANGELOG.md)" ]; then
+            echo "[FAIL] - Changelog has not been updated"
+            exit 1
+          else
+            echo "[SUCCESS] - Changelog has been updated"
+          fi
+
+# TODO: Automated changelog generation
