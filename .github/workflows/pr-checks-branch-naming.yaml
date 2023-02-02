@@ -1,0 +1,48 @@
+name: Branch Naming
+
+on: workflow_call
+
+jobs:
+  branch-naming:
+    runs-on: [self-hosted, Linux, standard]
+    if: ${{ !contains('dependabot', github.head_ref) }}
+    name: 🩺 Check branch name
+    steps:
+      - uses: actions/checkout@v3.2.0
+        with:
+          token: ${{ secrets.SVC_GITHUB_TOKEN }}
+
+      - name: ✅ Check branch name respects naming conventions
+        id: branchnamecheck
+        if: github.base_ref == 'develop'
+        run: |
+          git fetch
+          echo "base ref is main checking branch name..."
+          ALLOWED_PREFIXES="feature feat fix hotfix release chore break breaking docs"
+          BRANCH_NAME_VALID=false
+          PREFIXES_ARRAY=$(echo $ALLOWED_PREFIXES | tr " " "\n")
+          for PREFIX in $PREFIXES_ARRAY ; 
+          do 
+          if [[ "${{ github.head_ref }}" == $PREFIX/* ]]; then
+              echo "${{ github.head_ref }} respects prefix $PREFIX"
+              BRANCH_NAME_VALID=true
+          else
+              echo "${{ github.head_ref }} DOES NOT respects prefix $PREFIX"
+          fi
+          done
+          if [[ $BRANCH_NAME_VALID == true ]]; then
+              echo "[SUCCESS] - Your branch name respect the naming convention"  
+          else
+              echo "[FAIL] - Branch ${{ github.head_ref }} does not respect the naming convention, please rename"  
+              exit 1
+          fi
+      - name: ✅ Check if branch is develop
+        id: branchmergecheck
+        if: github.base_ref == 'master' || github.base_ref == 'main'
+        run: |
+          if [[ "${{ github.head_ref }}" == develop ]]; then
+              echo "[SUCCESS] - Develop is allow to merge on ${{ github.base_ref }} "  
+          else
+                echo "[FAIL] - Branch ${{ github.head_ref }} is not allow to merge on ${{ github.base_ref }} "  
+                exit 1
+          fi
