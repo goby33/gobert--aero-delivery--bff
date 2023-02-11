@@ -12,9 +12,8 @@ jobs:
     if: ${{ !contains('dependabot', github.head_ref) }}
     name: 🩺 Check Changelog
     steps:
-      - uses: actions/checkout@v3.3.0
-        with:
-          token: ${{ secrets.SVC_GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+
 
       - name: ✅ Check changelog has been updated
         id: changelogcheck
