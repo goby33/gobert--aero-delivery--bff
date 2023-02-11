@@ -8,7 +8,7 @@ on:
 
 jobs:
   commit:
-    runs-on: [self-hosted, Linux, standard]
+    runs-on: ubuntu-20.04
     name: 🩺 Check Commit
     steps:
       - uses: actions/checkout@v3.3.0

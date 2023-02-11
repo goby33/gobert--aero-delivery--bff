@@ -8,7 +8,7 @@ on:
 
 jobs:
   changelog-check:
-    runs-on: [self-hosted, Linux, standard]
+    runs-on: ubuntu-20.04
     if: ${{ !contains('dependabot', github.head_ref) }}
     name: 🩺 Check Changelog
     steps:
