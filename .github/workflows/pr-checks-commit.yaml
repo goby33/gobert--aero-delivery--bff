@@ -1,6 +1,10 @@
 name: Commit name check
 
-on: workflow_call
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   commit:

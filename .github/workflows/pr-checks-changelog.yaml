@@ -1,6 +1,10 @@
 name: Changelog
 
-on: workflow_call
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   changelog-check:

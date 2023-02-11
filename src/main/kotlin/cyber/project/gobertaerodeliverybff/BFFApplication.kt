@@ -1,8 +1,6 @@
 package cyber.project.gobertaerodeliverybff
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.Firestore
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.io.FileInputStream
