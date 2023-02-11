@@ -8,13 +8,11 @@ on:
 
 jobs:
   branch-naming:
-    runs-on: [self-hosted, Linux, standard]
+    runs-on: ubuntu-20.04
     if: ${{ !contains('dependabot', github.head_ref) }}
     name: 🩺 Check branch name
     steps:
-      - uses: actions/checkout@v3.3.0
-        with:
-          token: ${{ secrets.SVC_GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
 
       - name: ✅ Check branch name respects naming conventions
         id: branchnamecheck
@@ -39,14 +37,4 @@ jobs:
           else
               echo "[FAIL] - Branch ${{ github.head_ref }} does not respect the naming convention, please rename"  
               exit 1
-          fi
-      - name: ✅ Check if branch is develop
-        id: branchmergecheck
-        if: github.base_ref == 'master' || github.base_ref == 'main'
-        run: |
-          if [[ "${{ github.head_ref }}" == develop ]]; then
-              echo "[SUCCESS] - Develop is allow to merge on ${{ github.base_ref }} "  
-          else
-                echo "[FAIL] - Branch ${{ github.head_ref }} is not allow to merge on ${{ github.base_ref }} "  
-                exit 1
           fi
