@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono
 @Tag(name = "BFF-01 : User")
 interface UserControllerContract {
 
-    @Operation(summary = "SSCC printing", operationId = "BFF-04-01")
+    @Operation(summary = "get users", operationId = "BFF-01-01")
     @ApiResponse(
         responseCode = "202",
         description = "Accepted",
@@ -22,8 +22,7 @@ interface UserControllerContract {
     @ApiResponseError400
     @ApiResponseError500
     @ApiResponseError503
-    @PostMapping("/sscc/{sscc}/print")
-    fun printSscc(
-        @PathVariable sscc: String
-    ): Mono<Int>
+    @PostMapping("/users")
+    fun getUsers(
+    ): Mono<List<Int>>
 }

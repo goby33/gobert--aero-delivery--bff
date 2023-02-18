@@ -7,9 +7,7 @@ import reactor.core.publisher.Mono
 @RestController
 class UserController() : UserControllerContract {
 
-    override fun printSscc(
-        sscc: String
-    ): Mono<Int> {
-        return Mono.just(10)
+    override fun getUsers(): Mono<List<Int>> {
+        return Mono.just(listOf(1, 2, 3))
     }
 }
