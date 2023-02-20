@@ -1,4 +1,4 @@
-package cyber.project.gobertaerodeliverybff.data.repositories.user
+package cyber.project.gobertaerodeliverybff.data.repositories
 
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.DocumentReference
@@ -9,37 +9,30 @@ import cyber.project.gobertaerodeliverybff.data.examples.user.aGetUserResponseBo
 import cyber.project.gobertaerodeliverybff.data.examples.user.aUserResponseModel
 import cyber.project.gobertaerodeliverybff.data.models.response.user.UserResponseModel
 import cyber.project.gobertaerodeliverybff.data.repositories.UserRepositoryImpl
-import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import reactor.test.StepVerifier
 
 
-@ExtendWith(MockKExtension::class)
 class UserRepositoryImplTest {
 
-    private lateinit var userRepositoryImpl: UserRepositoryImpl
     private val firestore: Firestore = mockk()
     private val collectionRef: CollectionReference = mockk()
     private val docRef: DocumentReference = mockk()
     private val docSnapshot: DocumentSnapshot = mockk()
 
-    @BeforeEach
-    fun setUp() {
-        MockKAnnotations.init(this)
-        userRepositoryImpl = UserRepositoryImpl(firestore, GetProfileConverter())
-        every { firestore.collection(any()) } returns collectionRef
-        every { collectionRef.document(any()) } returns docRef
-        every { docRef.get().get() } returns docSnapshot
-    }
+    private val userRepositoryImpl = UserRepositoryImpl(firestore, GetProfileConverter())
+
 
     @Test
     fun getUser_returnsListOfGetUserResponseBo() {
         // GIVEN
+        every { firestore.collection(any()) } returns collectionRef
+        every { collectionRef.document(any()) } returns docRef
+        every { docRef.get().get() } returns docSnapshot
         every { docSnapshot.exists() } returns true // Ajout de la réponse pour la méthode exists()
         every { docSnapshot.toObject(UserResponseModel::class.java) } returns aUserResponseModel()
         val userUid = "testUser"
@@ -56,6 +49,9 @@ class UserRepositoryImplTest {
     @Test
     fun getUser_returnsEmptyList() {
         // GIVEN
+        every { firestore.collection(any()) } returns collectionRef
+        every { collectionRef.document(any()) } returns docRef
+        every { docRef.get().get() } returns docSnapshot
         every { docSnapshot.exists() } returns false // Ajout de la réponse pour la méthode exists()
         val userUid = "testUser"
 
@@ -66,5 +62,24 @@ class UserRepositoryImplTest {
         StepVerifier.create(result)
             .expectNext(emptyList())
             .verifyComplete()
+    }
+
+    @Test
+    fun getUser_returnsError() {
+        // GIVEN
+        every { firestore.collection(any()) } returns collectionRef
+        every { collectionRef.document(any()) } returns docRef
+        every { docRef.get().get() } returns docSnapshot
+        every { docSnapshot.exists() } returns true // Ajout de la réponse pour la méthode exists()
+        every { docSnapshot.toObject(UserResponseModel::class.java) } returns null
+        val userUid = "testUser"
+
+        // WHEN
+        val result = userRepositoryImpl.getUser(userUid)
+
+        // THEN
+        StepVerifier.create(result)
+            .expectError()
+            .verify()
     }
 }
