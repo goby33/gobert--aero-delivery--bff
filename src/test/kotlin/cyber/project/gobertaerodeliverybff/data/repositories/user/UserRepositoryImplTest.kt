@@ -11,14 +11,12 @@ import cyber.project.gobertaerodeliverybff.data.models.response.user.UserRespons
 import cyber.project.gobertaerodeliverybff.data.repositories.UserRepositoryImpl
 import io.mockk.MockKAnnotations
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import reactor.test.StepVerifier
-
 
 
 @ExtendWith(MockKExtension::class)
@@ -37,13 +35,13 @@ class UserRepositoryImplTest {
         every { firestore.collection(any()) } returns collectionRef
         every { collectionRef.document(any()) } returns docRef
         every { docRef.get().get() } returns docSnapshot
-        every { docSnapshot.exists() } returns true // Ajout de la réponse pour la méthode exists()
-        every { docSnapshot.toObject(UserResponseModel::class.java) } returns aUserResponseModel()
     }
 
     @Test
     fun getUser_returnsListOfGetUserResponseBo() {
         // GIVEN
+        every { docSnapshot.exists() } returns true // Ajout de la réponse pour la méthode exists()
+        every { docSnapshot.toObject(UserResponseModel::class.java) } returns aUserResponseModel()
         val userUid = "testUser"
 
         // WHEN
@@ -52,6 +50,21 @@ class UserRepositoryImplTest {
         // THEN
         StepVerifier.create(result)
             .expectNext(listOf(aGetUserResponseBo()))
+            .verifyComplete()
+    }
+
+    @Test
+    fun getUser_returnsEmptyList() {
+        // GIVEN
+        every { docSnapshot.exists() } returns false // Ajout de la réponse pour la méthode exists()
+        val userUid = "testUser"
+
+        // WHEN
+        val result = userRepositoryImpl.getUser(userUid)
+
+        // THEN
+        StepVerifier.create(result)
+            .expectNext(emptyList())
             .verifyComplete()
     }
 }
