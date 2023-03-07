@@ -8,7 +8,6 @@ import cyber.project.gobertaerodeliverybff.domain.repositories.UserRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
-import reactor.kotlin.core.publisher.switchIfEmpty
 import java.util.concurrent.CompletableFuture
 
 
@@ -29,9 +28,6 @@ class UserRepositoryImpl(
                 } else {
                     listOf()
                 }
-            }
-            .switchIfEmpty {
-                Mono.empty()
             }
             .subscribeOn(Schedulers.boundedElastic())
     }
